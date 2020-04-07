@@ -1,10 +1,12 @@
 package com.cantu.ticket.balance.domain;
 
+import java.util.Optional;
+
 public interface AccountRepository {
 
-    Account getAccountByAccountId(AccountId accountId);
+    Optional<Account> getAccountByAccountId(AccountId accountId);
 
-    Account getAccountByUserName(String userName);
+    Optional<Account> getAccountByUserName(String userName);
 
     void add(Account account);
 

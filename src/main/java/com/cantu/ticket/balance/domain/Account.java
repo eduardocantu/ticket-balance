@@ -64,6 +64,13 @@ public class Account {
             return this;
         }
 
+        public AccountBuilder withEmptyBalance() {
+            this.balance = Money.MoneyBuilder.aMoneyWithNoAmmount()
+                    .build();
+
+            return this;
+        }
+
         public Account build() {
             Account account = new Account();
             account.accountId = AccountId.aAccountId();

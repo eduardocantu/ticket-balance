@@ -1,0 +1,12 @@
+logging:
+  level:
+    org.springframework: INFO
+
+spring:
+  application:
+    name: ticket-balance
+
+server:
+  servlet:
+    contextPath: /ticket-balance
+  port: 9091

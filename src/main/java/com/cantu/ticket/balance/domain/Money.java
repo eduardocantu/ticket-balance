@@ -52,6 +52,12 @@ public class Money {
             return new MoneyBuilder();
         }
 
+        public static MoneyBuilder aMoneyWithNoAmmount() {
+            MoneyBuilder moneyBuilder = aMoney();
+            moneyBuilder.withAmmount(0);
+            return moneyBuilder;
+        }
+
         public MoneyBuilder withAmmount(int ammount) {
             this.ammount = BigDecimal.valueOf(ammount);
             return this;
