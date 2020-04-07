@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 public class AccountServiceShould {
@@ -17,18 +18,35 @@ public class AccountServiceShould {
 
     @Test
     public void increaseAccountBalanceAfterAddMoney() {
-        final Money amountToAddToUsersAccount = Money.MoneyBuilder.aMoney()
-                .withAmmount(50).build();
+        final Money amountToAddToUsersAccount = getMoneyWithAmmountOf(50);
 
-        accountService.addMoneyToUsersAccount(amountToAddToUsersAccount, ACCOUNT_OWNER_USER_NAME);
+        try {
+            accountService.addMoneyToUsersAccount(amountToAddToUsersAccount, ACCOUNT_OWNER_USER_NAME);
 
-        assertEquals(accountService.getCurrentBalanceOfUsersAccount(ACCOUNT_OWNER_USER_NAME),
-                amountToAddToUsersAccount);
+            assertEquals(accountService.getCurrentBalanceOfUsersAccount(ACCOUNT_OWNER_USER_NAME),
+                    amountToAddToUsersAccount);
+        } catch (UserDoesnHaveAnAccountException e) {
+        }
+    }
+
+    @Test
+    public void throwExceptionWhenUserDoesntExists() {
+        assertThrows(UserDoesnHaveAnAccountException.class,
+                () -> accountService.addMoneyToUsersAccount(
+                        getMoneyWithAmmountOf(50),
+                        "Some name that does not exists")
+        );
     }
 
     @BeforeEach
     public void setUp() {
         accountService = new AccountService(getAccountRepositoryWithInitialData());
+    }
+
+    private Money getMoneyWithAmmountOf(int amountOfMoney) {
+        return Money.MoneyBuilder.aMoney()
+                .withAmmount(amountOfMoney)
+                .build();
     }
 
     private AccountRepository getAccountRepositoryWithInitialData() {
