@@ -6,7 +6,6 @@ import com.cantu.ticket.balance.domain.AccountRepository;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class AccountRepositoryInMemory implements AccountRepository {
 
@@ -32,6 +31,11 @@ public class AccountRepositoryInMemory implements AccountRepository {
 
     @Override
     public void add(Account account) {
+        accounts.put(account.getAccountId(), account);
+    }
+
+    @Override
+    public void update(Account account) {
         accounts.put(account.getAccountId(), account);
     }
 

@@ -8,5 +8,7 @@ public interface AccountRepository {
 
     void add(Account account);
 
+    void update(Account account);
+
     void remove(Account account);
 }

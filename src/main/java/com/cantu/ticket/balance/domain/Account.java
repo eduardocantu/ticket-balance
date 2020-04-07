@@ -8,18 +8,26 @@ public class Account {
 
     private User owner;
 
-    private Balance currentBalance;
+    private Money balance;
+
+    public AccountId getAccountId() {
+        return accountId;
+    }
 
     public User getOwner() {
         return owner;
     }
 
-    public Balance getCurrentBalance() {
-        return currentBalance;
+    public Money currentBalance() {
+        return balance;
     }
 
-    public AccountId getAccountId() {
-        return accountId;
+    public void addMoney(Money ammount) {
+        balance = balance.add(ammount);
+    }
+
+    public void withdrawMoney(Money ammount) {
+        balance = balance.remove(ammount);
     }
 
     @Override
@@ -37,7 +45,7 @@ public class Account {
 
     public static final class AccountBuilder {
         private User owner;
-        private Balance currentBalance;
+        private Money balance;
 
         private AccountBuilder() {
         }
@@ -51,15 +59,15 @@ public class Account {
             return this;
         }
 
-        public AccountBuilder withCurrentBalance(Balance currentBalance) {
-            this.currentBalance = currentBalance;
+        public AccountBuilder withBalance(Money balance) {
+            this.balance = balance;
             return this;
         }
 
         public Account build() {
             Account account = new Account();
             account.accountId = AccountId.aAccountId();
-            account.currentBalance = this.currentBalance;
+            account.balance = this.balance;
             account.owner = this.owner;
             return account;
         }
