@@ -7,6 +7,9 @@ public class Money {
 
     private BigDecimal ammount;
 
+    private Money() {
+    }
+
     public BigDecimal getAmmount() {
         return ammount;
     }
@@ -53,6 +56,11 @@ public class Money {
         private BigDecimal ammount;
 
         private MoneyBuilder() {
+        }
+
+        public static MoneyBuilder aMoney(Money money) {
+            return aMoney().
+                    withAmmount(money.getAmmount());
         }
 
         public static MoneyBuilder aMoney() {

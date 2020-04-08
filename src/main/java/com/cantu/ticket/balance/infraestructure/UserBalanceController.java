@@ -2,6 +2,7 @@ package com.cantu.ticket.balance.infraestructure;
 
 import com.cantu.ticket.balance.application.UserBalanceService;
 import com.cantu.ticket.balance.domain.UserAccount;
+import com.cantu.ticket.balance.domain.UserDoesNotExistsException;
 import com.cantu.ticket.balance.domain.UserDoesnHaveAnAccountException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,13 +25,14 @@ public class UserBalanceController {
 
     @RequestMapping(value = "/user-account-balance")
     public ResponseEntity<UserAccount> getUsersAccountBalance(
-            @RequestParam("username") @Valid String userName) {
+            @RequestParam("username") @Valid String username,
+            @RequestParam("accountId") @Valid String accountId) {
+
         try {
-//            return ResponseEntity.ok(
-//                    userBalanceService.getUsersAccountBalance(userName));
-            throw new UserDoesnHaveAnAccountException();
-        } catch (UserDoesnHaveAnAccountException e) {
-            return CustomExceptionHandler.handleCustomException(e, "User does not have an account", HttpStatus.NOT_FOUND);
+            return ResponseEntity.ok(userBalanceService.getUserAccount(username, accountId));
+        } catch (UserDoesNotExistsException | UserDoesnHaveAnAccountException e) {
+            return CustomExceptionHandler
+                    .handleCustomException(e, "User does not have an account", HttpStatus.NOT_FOUND);
         }
     }
 }

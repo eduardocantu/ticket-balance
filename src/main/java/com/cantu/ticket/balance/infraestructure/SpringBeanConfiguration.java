@@ -2,6 +2,8 @@ package com.cantu.ticket.balance.infraestructure;
 
 import com.cantu.ticket.balance.application.UserBalanceService;
 import com.cantu.ticket.balance.domain.*;
+import com.cantu.ticket.balance.infraestructure.dummy.AccountRepositoryInMemory;
+import com.cantu.ticket.balance.infraestructure.dummy.UserRepositoryInMemory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -45,13 +47,20 @@ public class SpringBeanConfiguration {
         final AccountRepositoryInMemory accountRepositoryInMemory = new AccountRepositoryInMemory();
         accountRepositoryInMemory.add(
                 Account.AccountBuilder.anAccount()
+                        .withAccountId(
+                                AccountId.aAccountId("1")
+                        )
                         .withOwner(
                                 User.UserBuilder.anUser()
                                         .withName("User1").build())
-                        .withEmptyBalance().build());
+                        .withEmptyBalance()
+                        .build());
 
         accountRepositoryInMemory.add(
                 Account.AccountBuilder.anAccount()
+                        .withAccountId(
+                                AccountId.aAccountId("2")
+                        )
                         .withOwner(
                                 User.UserBuilder.anUser()
                                         .withName("User2")

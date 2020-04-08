@@ -9,6 +9,4 @@ public interface Repository<T> {
     void add(T itemToAdd);
 
     void update(T itemToUpdate);
-
-    void remove(T itemToRemove);
 }

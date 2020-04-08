@@ -10,16 +10,19 @@ public class Account {
 
     private Money balance;
 
+    private Account() {
+    }
+
     public AccountId getAccountId() {
-        return accountId;
+        return AccountId.aAccountId(accountId);
     }
 
     public User getOwner() {
-        return owner;
+        return User.UserBuilder.anUser(owner).build();
     }
 
     public Money currentBalance() {
-        return balance;
+        return Money.MoneyBuilder.aMoney(balance).build();
     }
 
     public void addMoney(Money ammount) {

@@ -11,11 +11,11 @@ public class UserAccount {
     private BigDecimal currentBalance;
 
     public String getUserName() {
-        return userName;
+        return new String(userName);
     }
 
     public String getAccountId() {
-        return accountId;
+        return new String(accountId);
     }
 
     public BigDecimal getCurrentBalance() {

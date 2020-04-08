@@ -1,6 +1,6 @@
 package com.cantu.ticket.balance.domain;
 
-import com.cantu.ticket.balance.infraestructure.AccountRepositoryInMemory;
+import com.cantu.ticket.balance.infraestructure.dummy.AccountRepositoryInMemory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -38,7 +38,7 @@ public class AccountServiceShould {
     }
 
     @Test
-    public void anAccountShouldNotBeRetrievedWithWrongId() {
+    public void notRetrieveAnAccountWhenAskedWithWrongId() {
         accountRepository.add(getAccountWithInitialBalance(0));
 
         AccountId aRandomAccountId = AccountId.aAccountId();

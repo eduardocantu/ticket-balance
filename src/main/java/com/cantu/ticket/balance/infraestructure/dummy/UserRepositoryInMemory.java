@@ -1,4 +1,4 @@
-package com.cantu.ticket.balance.infraestructure;
+package com.cantu.ticket.balance.infraestructure.dummy;
 
 import com.cantu.ticket.balance.com.cantu.ticket.ddd.EntityId;
 import com.cantu.ticket.balance.domain.User;
@@ -39,10 +39,4 @@ public class UserRepositoryInMemory implements UserRepository {
         users.put(itemToUpdate.getName(), itemToUpdate);
     }
 
-    @Override
-    public void remove(User itemToRemove) {
-        if (users.containsKey(itemToRemove.getName())) {
-            users.remove(itemToRemove);
-        }
-    }
 }

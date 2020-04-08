@@ -42,13 +42,13 @@ public class UserBalanceServiceShould {
     }
 
     @Test
-    public void exceptionShouldBeThrownWhenUserDoesNotExists() throws UserDoesNotExistsException {
+    public void thrownExceptionWhenAskedToRetrieveAccountsForUserThatDoesNotExists() throws UserDoesNotExistsException {
         assertThrows(UserDoesNotExistsException.class,
                 () -> userBalanceService.getUserAccounts("A username that does not exists"));
     }
 
     @Test
-    public void balanceShouldBeAddedToUserAccountWhenAsked() {
+    public void addBalanceToUserAccountWhenAsked() {
         final String accountsOwnerUsername = "His username";
         final User accountsOwner = getUserWithUsername(accountsOwnerUsername);
         final String accountIdInternalId = "123456789";

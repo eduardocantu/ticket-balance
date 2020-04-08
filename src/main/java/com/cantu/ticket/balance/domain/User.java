@@ -10,7 +10,7 @@ public class User {
     private String name;
 
     public String getName() {
-        return name;
+        return new String(name);
     }
 
     @Override
@@ -30,6 +30,11 @@ public class User {
         private String name;
 
         private UserBuilder() {
+        }
+
+        public static UserBuilder anUser(User user) {
+            return anUser()
+                    .withName(user.getName());
         }
 
         public static UserBuilder anUser() {

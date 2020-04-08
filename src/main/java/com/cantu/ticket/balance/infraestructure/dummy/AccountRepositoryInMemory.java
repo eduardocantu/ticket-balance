@@ -1,4 +1,4 @@
-package com.cantu.ticket.balance.infraestructure;
+package com.cantu.ticket.balance.infraestructure.dummy;
 
 import com.cantu.ticket.balance.com.cantu.ticket.ddd.EntityId;
 import com.cantu.ticket.balance.domain.Account;
@@ -49,10 +49,4 @@ public class AccountRepositoryInMemory implements AccountRepository {
         accounts.put(account.getAccountId(), account);
     }
 
-    @Override
-    public void remove(Account account) {
-        if (accounts.get(account.getAccountId()) != null) {
-            accounts.remove(account.getAccountId());
-        }
-    }
 }
