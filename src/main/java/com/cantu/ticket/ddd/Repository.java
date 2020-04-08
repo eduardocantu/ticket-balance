@@ -1,4 +1,4 @@
-package com.cantu.ticket.balance.com.cantu.ticket.ddd;
+package com.cantu.ticket.ddd;
 
 import java.util.Optional;
 

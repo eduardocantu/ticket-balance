@@ -1,6 +1,6 @@
 package com.cantu.ticket.balance.infraestructure.dummy;
 
-import com.cantu.ticket.balance.com.cantu.ticket.ddd.EntityId;
+import com.cantu.ticket.ddd.EntityId;
 import com.cantu.ticket.balance.domain.User;
 import com.cantu.ticket.balance.domain.UserRepository;
 
