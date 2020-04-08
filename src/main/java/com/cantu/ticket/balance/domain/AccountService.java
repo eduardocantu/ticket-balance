@@ -1,5 +1,7 @@
 package com.cantu.ticket.balance.domain;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 public class AccountService {
@@ -10,24 +12,23 @@ public class AccountService {
         this.accountRepository = accountRepository;
     }
 
-    public void addMoneyToUsersAccount(Money ammount, String accountsOwnerUserName) throws UserDoesnHaveAnAccountException {
-        Optional<Account> account = accountRepository.getAccountByUserName(accountsOwnerUserName);
-
-        if (!account.isPresent()) {
-            throw new UserDoesnHaveAnAccountException();
-        }
-
-        account.get().addMoney(ammount);
+    public void addMoneyToAccount(Money amount, AccountId accountId) {
+        Optional<Account> account = getAccount(accountId);
+        account.get().addMoney(amount);
         accountRepository.update(account.get());
     }
 
-    public Money getCurrentBalanceOfUsersAccount(String accountsOwnerUserName) throws UserDoesnHaveAnAccountException {
-        Optional<Account> account = accountRepository.getAccountByUserName(accountsOwnerUserName);
+    public void removeMoneyFromAccount(Money amount, AccountId accountId) {
+        Optional<Account> account = getAccount(accountId);
+        account.get().withdrawMoney(amount);
+        accountRepository.update(account.get());
+    }
 
-        if (!account.isPresent()) {
-            throw new UserDoesnHaveAnAccountException();
-        }
+    public Optional<Account> getAccount(AccountId accountId) {
+        return accountRepository.getByEntityId(accountId);
+    }
 
-        return account.get().currentBalance();
+    public List<Account> getUserAccounts(User owner) {
+        return accountRepository.getAccountsByOwner(owner);
     }
 }

@@ -26,8 +26,9 @@ public class UserBalanceController {
     public ResponseEntity<UserAccount> getUsersAccountBalance(
             @RequestParam("username") @Valid String userName) {
         try {
-            return ResponseEntity.ok(
-                    userBalanceService.getUsersAccountBalance(userName));
+//            return ResponseEntity.ok(
+//                    userBalanceService.getUsersAccountBalance(userName));
+            throw new UserDoesnHaveAnAccountException();
         } catch (UserDoesnHaveAnAccountException e) {
             return CustomExceptionHandler.handleCustomException(e, "User does not have an account", HttpStatus.NOT_FOUND);
         }

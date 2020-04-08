@@ -1,13 +1,17 @@
 package com.cantu.ticket.balance.infraestructure;
 
+import com.cantu.ticket.balance.com.cantu.ticket.ddd.EntityId;
 import com.cantu.ticket.balance.domain.Account;
 import com.cantu.ticket.balance.domain.AccountId;
 import com.cantu.ticket.balance.domain.AccountRepository;
+import com.cantu.ticket.balance.domain.User;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Component
 public class AccountRepositoryInMemory implements AccountRepository {
@@ -19,20 +23,20 @@ public class AccountRepositoryInMemory implements AccountRepository {
     }
 
     @Override
-    public Optional<Account> getAccountByAccountId(AccountId accountId) {
-        if (accounts.containsKey(accountId)) {
-            return Optional.of(accounts.get(accountId));
+    public Optional<Account> getByEntityId(EntityId id) {
+        if (accounts.containsKey(id)) {
+            return Optional.of(accounts.get(id));
         } else {
             return Optional.empty();
         }
     }
 
     @Override
-    public Optional<Account> getAccountByUserName(String userName) {
+    public List<Account> getAccountsByOwner(User owner) {
         return accounts.values().stream()
                 .filter(
-                        account -> account.getOwner().getName().equals(userName))
-                .findFirst();
+                        account -> account.getOwner().equals(owner))
+                .collect(Collectors.toList());
     }
 
     @Override

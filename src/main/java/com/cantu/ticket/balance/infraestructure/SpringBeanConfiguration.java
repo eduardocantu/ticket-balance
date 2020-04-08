@@ -9,8 +9,13 @@ import org.springframework.context.annotation.Configuration;
 public class SpringBeanConfiguration {
 
     @Bean
-    UserBalanceService userBalanceService(AccountService accountService) {
-        return new UserBalanceService(accountService);
+    UserBalanceService userBalanceService(AccountService accountService, UserService userService) {
+        return new UserBalanceService(accountService, userService);
+    }
+
+    @Bean
+    UserService userService() {
+        return new UserService(getUserRepository());
     }
 
     @Bean
@@ -18,14 +23,32 @@ public class SpringBeanConfiguration {
         return new AccountService(getAccountRepository());
     }
 
+    private UserRepository getUserRepository() {
+        final UserRepositoryInMemory userRepositoryInMemory = new UserRepositoryInMemory();
+
+        userRepositoryInMemory.add(
+                User.UserBuilder.anUser()
+                        .withName("User1")
+                        .build()
+        );
+
+        userRepositoryInMemory.add(
+                User.UserBuilder.anUser()
+                        .withName("User2")
+                        .build()
+        );
+
+        return userRepositoryInMemory;
+    }
+
     private AccountRepositoryInMemory getAccountRepository() {
         final AccountRepositoryInMemory accountRepositoryInMemory = new AccountRepositoryInMemory();
         accountRepositoryInMemory.add(
                 Account.AccountBuilder.anAccount()
-                    .withOwner(
-                            User.UserBuilder.anUser()
-                                .withName("User1").build())
-                    .withEmptyBalance().build());
+                        .withOwner(
+                                User.UserBuilder.anUser()
+                                        .withName("User1").build())
+                        .withEmptyBalance().build());
 
         accountRepositoryInMemory.add(
                 Account.AccountBuilder.anAccount()

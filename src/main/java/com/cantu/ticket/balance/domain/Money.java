@@ -22,7 +22,7 @@ public class Money {
 
     public Money remove(Money toRemove) {
         BigDecimal amountToRemove = toRemove.getAmmount();
-        BigDecimal decreasedAmmount = ammount.add(amountToRemove);
+        BigDecimal decreasedAmmount = ammount.subtract(amountToRemove);
 
         return Money.MoneyBuilder.aMoney()
                 .withAmmount(decreasedAmmount)
@@ -40,6 +40,13 @@ public class Money {
     @Override
     public int hashCode() {
         return Objects.hash(ammount);
+    }
+
+    @Override
+    public String toString() {
+        return "Money{" +
+                "ammount=" + ammount != null ? String.valueOf(ammount.doubleValue()) : "" +
+                '}';
     }
 
     public static final class MoneyBuilder {

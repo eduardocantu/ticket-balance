@@ -44,6 +44,7 @@ public class Account {
     }
 
     public static final class AccountBuilder {
+        private AccountId accountId;
         private User owner;
         private Money balance;
 
@@ -51,7 +52,14 @@ public class Account {
         }
 
         public static AccountBuilder anAccount() {
-            return new AccountBuilder();
+            AccountBuilder builder = new AccountBuilder();
+            builder.withAccountId(AccountId.aAccountId());
+            return builder;
+        }
+
+        public AccountBuilder withAccountId(AccountId accountId) {
+            this.accountId = accountId;
+            return this;
         }
 
         public AccountBuilder withOwner(User owner) {
@@ -73,7 +81,7 @@ public class Account {
 
         public Account build() {
             Account account = new Account();
-            account.accountId = AccountId.aAccountId();
+            account.accountId = this.accountId;
             account.balance = this.balance;
             account.owner = this.owner;
             return account;
