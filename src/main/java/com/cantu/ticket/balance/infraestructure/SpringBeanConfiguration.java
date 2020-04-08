@@ -1,14 +1,15 @@
 package com.cantu.ticket.balance.infraestructure;
 
 import com.cantu.ticket.balance.application.UserBalanceService;
-import com.cantu.ticket.balance.domain.*;
-import com.cantu.ticket.balance.infraestructure.dummy.AccountRepositoryInMemory;
-import com.cantu.ticket.balance.infraestructure.dummy.UserRepositoryInMemory;
+import com.cantu.ticket.balance.domain.AccountRepository;
+import com.cantu.ticket.balance.domain.AccountService;
+import com.cantu.ticket.balance.domain.UserRepository;
+import com.cantu.ticket.balance.domain.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class SpringBeanConfiguration {
+public abstract class SpringBeanConfiguration {
 
     @Bean
     UserBalanceService userBalanceService(AccountService accountService, UserService userService) {
@@ -25,51 +26,7 @@ public class SpringBeanConfiguration {
         return new AccountService(getAccountRepository());
     }
 
-    private UserRepository getUserRepository() {
-        final UserRepositoryInMemory userRepositoryInMemory = new UserRepositoryInMemory();
+    protected abstract UserRepository getUserRepository();
 
-        userRepositoryInMemory.add(
-                User.UserBuilder.anUser()
-                        .withName("User1")
-                        .build()
-        );
-
-        userRepositoryInMemory.add(
-                User.UserBuilder.anUser()
-                        .withName("User2")
-                        .build()
-        );
-
-        return userRepositoryInMemory;
-    }
-
-    private AccountRepositoryInMemory getAccountRepository() {
-        final AccountRepositoryInMemory accountRepositoryInMemory = new AccountRepositoryInMemory();
-        accountRepositoryInMemory.add(
-                Account.AccountBuilder.anAccount()
-                        .withAccountId(
-                                AccountId.aAccountId("1")
-                        )
-                        .withOwner(
-                                User.UserBuilder.anUser()
-                                        .withName("User1").build())
-                        .withEmptyBalance()
-                        .build());
-
-        accountRepositoryInMemory.add(
-                Account.AccountBuilder.anAccount()
-                        .withAccountId(
-                                AccountId.aAccountId("2")
-                        )
-                        .withOwner(
-                                User.UserBuilder.anUser()
-                                        .withName("User2")
-                                        .build())
-                        .withBalance(Money.MoneyBuilder.aMoney()
-                                .withAmmount(50)
-                                .build())
-                        .build());
-
-        return accountRepositoryInMemory;
-    }
+    protected abstract AccountRepository getAccountRepository();
 }

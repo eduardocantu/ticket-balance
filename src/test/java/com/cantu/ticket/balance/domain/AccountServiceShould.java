@@ -1,14 +1,28 @@
 package com.cantu.ticket.balance.domain;
 
-import com.cantu.ticket.balance.infraestructure.dummy.AccountRepositoryInMemory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.mockito.Mockito.*;
+
+@ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
 public class AccountServiceShould {
 
+    @Mock
     private AccountRepository accountRepository;
+
     private AccountService accountService;
 
     @Test
@@ -16,12 +30,13 @@ public class AccountServiceShould {
         final Account accountToHaveTheAmountDecreased = getAccountWithInitialBalance(100);
         final AccountId accountId = accountToHaveTheAmountDecreased.getAccountId();
 
-        accountRepository.add(accountToHaveTheAmountDecreased);
+        when(accountRepository.getByEntityId(accountId))
+                .thenReturn(Optional.of(accountToHaveTheAmountDecreased));
 
         accountService.removeMoneyFromAccount(getMoneyWithAmmountOf(40), accountId);
-        final Account accountWithAmountDecreased = accountService.getAccount(accountId).get();
 
-        assertEquals(accountWithAmountDecreased.currentBalance(), getMoneyWithAmmountOf(60));
+        verify(accountRepository, times(1))
+                .update(accountToHaveTheAmountDecreased);
     }
 
     @Test
@@ -29,41 +44,44 @@ public class AccountServiceShould {
         final Account accountToHaveTheAmountIncreased = getAccountWithInitialBalance(0);
         final AccountId accountId = accountToHaveTheAmountIncreased.getAccountId();
 
-        accountRepository.add(accountToHaveTheAmountIncreased);
+        when(accountRepository.getByEntityId(accountId))
+                .thenReturn(Optional.of(accountToHaveTheAmountIncreased));
 
         accountService.addMoneyToAccount(getMoneyWithAmmountOf(50), accountId);
-        final Account accountWithAmountIncreased = accountService.getAccount(accountId).get();
 
-        assertEquals(accountWithAmountIncreased.currentBalance(), getMoneyWithAmmountOf(50));
+        verify(accountRepository, times(1))
+                .update(accountToHaveTheAmountIncreased);
     }
 
     @Test
     public void notRetrieveAnAccountWhenAskedWithWrongId() {
-        accountRepository.add(getAccountWithInitialBalance(0));
-
+        Account account = getAccountWithInitialBalance(0);
         AccountId aRandomAccountId = AccountId.aAccountId();
+
+        when(accountRepository.getByEntityId(account.getAccountId())).thenReturn(Optional.of(account));
         assertFalse(accountService.getAccount(aRandomAccountId).isPresent());
     }
 
     @Test
     public void listAllUsersAccounts() {
-        final String accountsOwner = "Some username";
+        final String accountsOwnerUsername = "Some username";
+        final User accountsOwner = getUserWithName(accountsOwnerUsername);
 
-        accountRepository.add(getAccountWithInitialBalanceForUsername(0, accountsOwner));
-        accountRepository.add(getAccountWithInitialBalanceForUsername(0, accountsOwner));
-        accountRepository.add(getAccountWithInitialBalanceForUsername(0, accountsOwner));
+        List<Account> accounts = Arrays.asList(
+                new Account[]{
+                        getAccountWithInitialBalanceForUsername(0, accountsOwnerUsername),
+                        getAccountWithInitialBalanceForUsername(0, accountsOwnerUsername),
+                        getAccountWithInitialBalanceForUsername(0, accountsOwnerUsername)
+                });
 
-        assertEquals(accountService.getUserAccounts(getUserWithName(accountsOwner)).size(), 3);
+        when(accountRepository.getAccountsByOwner(accountsOwner)).thenReturn(accounts);
+
+        assertEquals(accountService.getUserAccounts(getUserWithName(accountsOwnerUsername)).size(), 3);
     }
 
     @BeforeEach
     public void setUp() {
-        cleanUpAccountRepository();
         accountService = new AccountService(accountRepository);
-    }
-
-    private void cleanUpAccountRepository() {
-        accountRepository = new AccountRepositoryInMemory();
     }
 
     private Account getAccountWithInitialBalance(int initialBalance) {
