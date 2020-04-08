@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class MoneyShould {
 
     @Test
-    public void shouldHaveTheValueIncreasedAfterAddingMoney() {
+    public void haveTheValueIncreasedAfterAddingMoney() {
         Money beforeAdd = Money.MoneyBuilder
                 .aMoney()
                 .withAmmount(50)
@@ -27,7 +27,7 @@ public class MoneyShould {
     }
 
     @Test
-    public void shouldHaveTheValueDecreasedAfterRemovingMoney() {
+    public void haveTheValueDecreasedAfterRemovingMoney() {
         Money beforeRemove = Money.MoneyBuilder
                 .aMoney()
                 .withAmmount(50)
