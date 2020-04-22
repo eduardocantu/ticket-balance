@@ -1,7 +1,7 @@
 package com.cantu.ticket.balance.infraestructure.dummy;
 
 import com.cantu.ticket.balance.domain.*;
-import com.cantu.ticket.balance.infraestructure.SpringBeanConfiguration;
+import com.cantu.ticket.SpringBeanConfiguration;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
